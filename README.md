@@ -15,11 +15,11 @@ Involved technologies:
 
 *Create a virtual enviroment, clone the repo, install requirements*
 
-		virtualenv --distribute -p=/usr/bin/python3.x lys-ms
+		virtualenv -p /usr/bin/python3.2 lys-ms
 		cd lys-ms
 		source bin/activate
 		git clone https://github.com/brunifrancesco/lys-ms.git
-		pip3 install -r requirements.txt
+		pip install -r requirements.txt
 
 *Run the server*
 		
