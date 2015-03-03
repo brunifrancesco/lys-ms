@@ -19,7 +19,8 @@ Involved technologies:
 		cd lys-ms
 		source bin/activate
 		git clone https://github.com/brunifrancesco/lys-ms.git
-		pip install -r requirements.txt
+		cd lys-ms
+		pip-3x install -r requirements.txt
 
 *Run the server*
 		
