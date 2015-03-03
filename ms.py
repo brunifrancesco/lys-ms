@@ -26,6 +26,7 @@ def recor_stream():
     if "port" in request.json and "filename" in request.json:
         res = start_stream_and_store(**request.json)
         if res:
+            print(res)
             return dict(details="Ok", pid=res)
         return result(404, dict(details="Resource does not exists"))
     return result(400, dict(details="Missing port/filename param"))

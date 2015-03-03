@@ -1,3 +1,7 @@
+
+
+
+
 import redis
 import functools
 import os
@@ -19,7 +23,7 @@ def start_stream_and_store(*args, **kwargs):
                 return proc.pid
         return 0
     except Exception as e:
-        print e
+        print(e)
         return 0
 
 
@@ -32,10 +36,10 @@ def write_sdp_file(port, sdp_content):
     """
     try:
         with open("sdps/%s_I.sdp" % port, "wb") as input:
-            input.write(sdp_content)
+            input.write(bytes(sdp_content, 'UTF-8'))
         return 1
     except Exception as e:
-        print e
+        print(e)
         return 0
 
 
@@ -48,14 +52,14 @@ def stop_stream_and_delete_file(pid):
     """
     try:
         port = RedisStore().read_data(key=pid)
-        if os.path.isfile("sdps/%s_I.sdp" %port):
+        if os.path.isfile("sdps/%s_I.sdp" %port.decode(encoding='UTF-8')):
             os.kill(pid, signal.SIGKILL)
-            os.remove("sdps/%s_I.sdp" %port)
+            os.remove("sdps/%s_I.sdp" %port.decode(encoding='UTF-8'))
             RedisStore().delete_data(key=pid)
             return 1
         return 0
     except Exception as e:
-        print e
+        print(e)
         return 0
 
 
@@ -63,8 +67,8 @@ def get_current_streams():
     """
     Get current streams
     """
-    return RedisStore().get_current_streams(key=None)
-
+    return list(map(lambda item: item.decode("UTF-8"), RedisStore().get_current_streams(key=None)))
+    
 
 def auth_request(request):
     """
@@ -76,7 +80,6 @@ def auth_request(request):
         def check_remote_addr():
 
             remote_addr = request.remote_addr
-            print remote_addr
             if remote_addr == "127.0.0.1":
                 return controller()
             abort(403, "Forbidden")

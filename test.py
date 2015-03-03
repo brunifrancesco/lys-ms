@@ -12,14 +12,14 @@ class TestWriteSDP(unittest.TestCase):
     def test_write_sdp(self):
         response = application.post_json("/writeSdp", dict(port=10, sdp_content="ciaociaociao"))
         self.assert_(response.status_int == 200)
-        self.assert_(os.path.isfile("10_I.sdp"))
+        self.assert_(os.path.isfile("sdps/10_I.sdp"))
 
 
 class StreamTest(unittest.TestCase):
     def setUp(self):
         RedisStore().persist_data(key="test", value="test")
         with open("sdps/10_I.sdp", "wb") as input:
-            input.write("Dummy content")
+            input.write(bytes("Dummy content", 'UTF-8'))
 
     def tearDown(self):
         for key in RedisStore().connection.keys():
@@ -28,11 +28,11 @@ class StreamTest(unittest.TestCase):
     def test_recor_stream(self):
         respone = application.post_json("/recordStream", dict(port=10, filename="filename_ex"))
         self.assert_(respone.json["pid"] > 1)
-        self.assert_(RedisStore().read_data(key=respone.json["pid"]) == str(10))
+        self.assert_(RedisStore().read_data(key=respone.json["pid"]).decode("utf-8") == '10')
 
 
         pid = respone.json["pid"]
-        response = application.delete_json("/writeSdp", dict(pid=respone.json["pid"]))
+        response = application.delete_json("/writeSdp", dict(pid=pid))
         self.assert_(response.status_int == 200)
         self.assert_(RedisStore().read_data(pid) == None)
 
