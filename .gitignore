@@ -1,0 +1,6 @@
+.Python
+*.pyc
+include/
+lib/
+bin/
+*.sdp
