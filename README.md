@@ -18,7 +18,7 @@ Involved technologies:
 		virtualenv --distribute -p=/usr/bin/python3.x lys-ms
 		cd lys-ms
 		source bin/activate
-		git clone 
+		git clone https://github.com/brunifrancesco/lys-ms.git
 		pip3 install -r requirements.txt
 
 *Run the server*
